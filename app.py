@@ -61,7 +61,17 @@ with st.sidebar:
 # ── Load data ─────────────────────────────────────────────────
 @st.cache_data
 def get_data():
-    return load_and_train("data/hotel_transactions.csv")
+    import os
+    # Works both locally and on Streamlit Cloud
+    if os.path.exists("data/hotel_transactions.csv"):
+        path = "data/hotel_transactions.csv"
+    elif os.path.exists("hotel_transactions.csv"):
+        path = "hotel_transactions.csv"
+    else:
+        # Streamlit Cloud path
+        base = os.path.dirname(os.path.abspath(__file__))
+        path = os.path.join(base, "hotel_transactions.csv")
+    return load_and_train(path)
 
 with st.spinner("Loading data and running anomaly detection model..."):
     df, model, scaler, features = get_data()
