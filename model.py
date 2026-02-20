@@ -3,7 +3,13 @@ import numpy as np
 from sklearn.ensemble import IsolationForest
 from sklearn.preprocessing import StandardScaler
 
-def load_and_train(filepath="data/hotel_transactions.csv"):
+def load_and_train(filepath=None):
+    import os
+    if filepath is None:
+        if os.path.exists("data/hotel_transactions.csv"):
+            filepath = "data/hotel_transactions.csv"
+        else:
+            filepath = "hotel_transactions.csv"
     df = pd.read_csv(filepath)
 
     # ── Feature engineering ───────────────────────────────────
